@@ -84,7 +84,7 @@ public class ProductController {
         ProductDetailsDto deletedProduct = productMapper.toProductDetailsDto(
             productService.deleteProduct(id)
         );
-        return ResponseEntity.ok(deletedProduct);
+        return ResponseEntity.status(204).body(deletedProduct);
     }
 
     @PostMapping("/activate")

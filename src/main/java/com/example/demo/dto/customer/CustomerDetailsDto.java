@@ -18,18 +18,18 @@ import java.util.List;
 @Validated
 public class CustomerDetailsDto {
 
-    @NotBlank(message = "Ім'я клієнта не може бути порожнім.")
-    @Size(max = 100, message = "Ім'я клієнта не повинно перевищувати 100 символів.")
+    @NotBlank(message = "The client name cannot be empty.")
+    @Size(max = 100, message = "The customer name must not exceed 100 characters.")
     String name;
 
-    @NotBlank(message = "Номер телефону не може бути порожнім.")
-    @Size(max = 15, message = "Номер телефону не повинен перевищувати 15 символів.")
+    @NotBlank(message = "The phone number cannot be empty.")
+    @Size(max = 15, message = "The phone number must not exceed 15 characters.")
     String phoneNumber;
 
-    @Email(message = "Неправильний формат електронної пошти.")
-    @NotBlank(message = "Електронна пошта не може бути порожньою.")
+    @Email(message = "Email format is incorrect.")
+    @NotBlank(message = "Email cannot be empty.")
     String email;
 
-    @NotEmpty(message = "Список типів місій не може бути порожнім.")
+    @NotEmpty(message = "The list of mission types cannot be empty.")
     List<MissionType> missionTypes;
 }

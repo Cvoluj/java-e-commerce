@@ -30,9 +30,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDetails addProduct(ProductDetails product) {
-        log.info("FUCK {}", product);
         if (products.stream().anyMatch(p -> p.getId().equals(product.getId()))) {
-            throw new IllegalArgumentException("Product with ID " + product.getId() + " already exists.");
+            throw new IllegalArgumentException(String.format("Product with ID %d already exists.", product.getId()));
         }
 
         products.add(product);

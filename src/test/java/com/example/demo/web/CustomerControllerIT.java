@@ -68,7 +68,7 @@ public class CustomerControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(customerDetailsDto)))
                 .andExpect(status().isNotImplemented())
-                .andExpect(content().string("Створення клієнта поки що не підтримується."));
+                .andExpect(content().string("Client creation is not yet supported."));
     }
 
     @Test

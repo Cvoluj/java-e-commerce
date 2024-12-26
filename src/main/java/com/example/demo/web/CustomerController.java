@@ -61,7 +61,7 @@ public class CustomerController {
             throw new CustomValidationException("Validation failed for input data", errors);
         }
 
-        throw new UnsupportedOperationException("Створення клієнта поки що не підтримується.");
+        throw new UnsupportedOperationException("Client creation is not yet supported.");
     }
 
 
