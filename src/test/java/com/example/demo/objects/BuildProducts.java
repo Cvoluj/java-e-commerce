@@ -4,15 +4,15 @@ import com.example.demo.domain.ProductDetails;
 import com.example.demo.dto.product.ProductDetailsDto;
 import com.example.demo.common.MissionType;
 import com.example.demo.common.SpacecraftType;
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 
 import java.util.Arrays;
 import java.util.List;
 
-@Component
+@UtilityClass
 public class BuildProducts {
 
-    public ProductDetails buildProductDetails() {
+    public static ProductDetails buildProductDetails() {
         return ProductDetails.builder()
                 .id(1L)
                 .title("Spaceship Model A")
@@ -24,7 +24,7 @@ public class BuildProducts {
                 .build();
     }
 
-    public ProductDetailsDto buildProductDetailsDto() {
+    public static ProductDetailsDto buildProductDetailsDto() {
         return ProductDetailsDto.builder()
                 .id(1L)
                 .title("Spaceship Model A")
@@ -36,7 +36,7 @@ public class BuildProducts {
                 .build();
     }
 
-    public ProductDetails buildInvalidProductDetails() {
+    public static ProductDetails buildInvalidProductDetails() {
         return ProductDetails.builder()
                 .id(999L)
                 .title(" ")
@@ -48,7 +48,7 @@ public class BuildProducts {
                 .build();
     }
 
-    public List<ProductDetails> buildProductList() {
+    public static List<ProductDetails> buildProductList() {
         return Arrays.asList(
                 ProductDetails.builder()
                         .id(1L)

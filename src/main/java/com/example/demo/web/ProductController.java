@@ -79,12 +79,13 @@ public class ProductController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProductDetailsDto> deleteProductById(@PathVariable Long id) {
+    public ResponseEntity<?> deleteProductById(@PathVariable Long id) {
         log.info("Deleting product with ID: {}", id);
         ProductDetailsDto deletedProduct = productMapper.toProductDetailsDto(
             productService.deleteProduct(id)
         );
-        return ResponseEntity.status(204).body(deletedProduct);
+        log.info("Deleted product: {}", deletedProduct);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/activate")
