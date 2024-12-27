@@ -5,11 +5,12 @@ import com.example.demo.common.MissionType;
 import lombok.Builder;
 import lombok.Data;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder(toBuilder = true)
 public class ProductDetails {
-    Long id;
+    UUID id;
     String title;
     String shortDescription;
     Double price;

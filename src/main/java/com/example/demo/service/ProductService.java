@@ -4,6 +4,7 @@ import com.example.demo.domain.ProductDetails;
 import com.example.demo.dto.activation.ActivationRequestDto;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ProductService {
 
@@ -11,9 +12,9 @@ public interface ProductService {
 
     ProductDetails updateProduct(ProductDetails product);
 
-    ProductDetails deleteProduct(Long id);
+    ProductDetails deleteProduct(UUID id);
 
-    ProductDetails getProductById(Long id);
+    ProductDetails getProductById(UUID id);
 
     List<ProductDetails> getProducts();
 

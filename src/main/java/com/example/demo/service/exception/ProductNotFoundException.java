@@ -1,10 +1,12 @@
 package com.example.demo.service.exception;
 
-public class ProductNotFoundException extends RuntimeException {
-    private static final String PRODUCT_NOT_FOUND_MESSAGE_TEMPLATE = "Product with ID [%d] not found.";
+import java.util.UUID;
 
-    public ProductNotFoundException(Long productId) {
-        super(String.format(PRODUCT_NOT_FOUND_MESSAGE_TEMPLATE, productId));
+public class ProductNotFoundException extends RuntimeException {
+    private static final String PRODUCT_NOT_FOUND_MESSAGE_TEMPLATE = "Product with ID [%s] not found.";
+
+    public ProductNotFoundException(UUID productId) {
+        super(String.format(PRODUCT_NOT_FOUND_MESSAGE_TEMPLATE, productId.toString()));
     }
 
     public ProductNotFoundException(String message) {

@@ -3,14 +3,17 @@ package com.example.demo.objects;
 import com.example.demo.domain.CustomerDetails;
 import com.example.demo.dto.customer.CustomerDetailsDto;
 import com.example.demo.common.MissionType;
+import lombok.experimental.UtilityClass;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
-@Component
+@UtilityClass
 public class BuildCustomers {
+    static UUID uuid1 = UUID.fromString("61013972-48a9-4040-9c2b-06fc6c9ff80a");
 
-    public CustomerDetailsDto buildCustomerDetailsDto() {
+    public static CustomerDetailsDto buildCustomerDetailsDto() {
         return CustomerDetailsDto.builder()
                 .name("Mister Bisnes")
                 .phoneNumber("+380631234567")
@@ -19,9 +22,9 @@ public class BuildCustomers {
                 .build();
     }
 
-    public CustomerDetails buildCustomerDetails() {
+    public static CustomerDetails buildCustomerDetails() {
         return CustomerDetails.builder()
-                .id(1L)
+                .id(uuid1)
                 .name("Mister Bisnes")
                 .phoneNumber("+380631234567")
                 .email("mr.bussines@example.com")
@@ -29,7 +32,7 @@ public class BuildCustomers {
                 .build();
     }
 
-    public CustomerDetails buildInvalidCustomerDetails() {
+    public static CustomerDetails buildInvalidCustomerDetails() {
         return CustomerDetails.builder()
                 .id(null)
                 .name(" ")

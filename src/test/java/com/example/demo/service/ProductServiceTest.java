@@ -13,17 +13,23 @@ import com.example.demo.service.impl.ActivationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
+import java.util.UUID;
 
+@ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
+
+    private final UUID wrongUUID = UUID.fromString("1a740b1a-1e33-4479-bb41-3d9e99f31a2b");
 
     @InjectMocks
     private ProductServiceImpl productService;
@@ -31,20 +37,15 @@ public class ProductServiceTest {
     @Mock
     private ActivationServiceImpl activationService;
 
+    private final List<ProductDetails> products = buildProductDetailsMock();
 
-    private List<ProductDetails> products;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        products = buildProductDetailsMock();
-    }
 
     @Test
     @DisplayName("Should add a new product")
     void shouldAddProduct() {
+        UUID newUUID = UUID.randomUUID();
         ProductDetails newProduct = ProductDetails.builder()
-                .id(6L)
+                .id(newUUID)
                 .title("Apollo")
                 .shortDescription("Spacecraft for moon missions")
                 .price(50000000.0)
@@ -57,13 +58,13 @@ public class ProductServiceTest {
 
 
         assertNotNull(addedProduct);
-        assertEquals(6L, addedProduct.getId());
+        assertEquals(newUUID, addedProduct.getId());
     }
 
     @Test
     @DisplayName("Should find product by ID")
     void shouldFindProductById() {
-        Long productId = 1L;
+        UUID productId = UUID.fromString("3c4632d1-da13-44f5-b3b5-68fe49d179ae");
         ProductDetails expectedProduct = products.get(0);
 
         ProductDetails foundProduct = productService.getProductById(productId);
@@ -76,9 +77,7 @@ public class ProductServiceTest {
     @Test
     @DisplayName("Should throw ProductNotFoundException when product not found")
     void shouldThrowProductNotFoundException() {
-        Long invalidProductId = 999L;
-
-        assertThrows(ProductNotFoundException.class, () -> productService.getProductById(invalidProductId));
+        assertThrows(ProductNotFoundException.class, () -> productService.getProductById(wrongUUID));
     }
 
     @Test
@@ -100,7 +99,7 @@ public class ProductServiceTest {
     @DisplayName("Should throw ProductNotFoundException when updating non-existing product")
     void shouldThrowProductNotFoundExceptionWhenUpdatingProduct() {
         ProductDetails nonExistingProduct = ProductDetails.builder()
-                .id(999L)
+                .id(wrongUUID)
                 .title("Non-Existing Product")
                 .price(1000000.0)
                 .build();
@@ -153,7 +152,7 @@ public class ProductServiceTest {
     private List<ProductDetails> buildProductDetailsMock() {
         return List.of(
                 ProductDetails.builder()
-                        .id(1L)
+                        .id(UUID.fromString("3c4632d1-da13-44f5-b3b5-68fe49d179ae"))
                         .title("Falcon 9")
                         .shortDescription("A reusable rocket designed for commercial missions")
                         .price(62000000.0)
@@ -162,7 +161,7 @@ public class ProductServiceTest {
                         .tags(List.of("space", "rocket", "commercial"))
                         .build(),
                 ProductDetails.builder()
-                        .id(2L)
+                        .id(UUID.fromString("db622b70-9d51-48f6-a4be-bff435d9a099"))
                         .title("Dragon")
                         .shortDescription("A spacecraft designed for cargo and crew missions to the ISS")
                         .price(200000000.0)

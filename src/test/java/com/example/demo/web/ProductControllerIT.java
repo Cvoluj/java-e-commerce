@@ -1,5 +1,6 @@
 package com.example.demo.web;
 
+import com.example.demo.BaseIntegration;
 import com.example.demo.service.impl.ProductServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +15,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +24,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,9 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @DisplayName("Product Controller IT")
 @Tag("product-service")
-public class ProductControllerIT {
-
-    public static final Long ID = 1L;
+public class ProductControllerIT extends BaseIntegration {
+    public static final UUID uuid1 = UUID.fromString("3c4632d1-da13-44f5-b3b5-68fe49d179ae");
 
     @Autowired
     private MockMvc mockMvc;
@@ -51,9 +55,6 @@ public class ProductControllerIT {
     private ProductController productController;
 
     @Autowired
-    private BuildProducts buildProducts;
-
-    @Autowired
     private ProductMapper productMapper;
 
 
@@ -61,7 +62,7 @@ public class ProductControllerIT {
     @Test
     @SneakyThrows
     void shouldCreateProduct() throws JsonProcessingException, Exception {
-        ProductDetailsDto productDetailsDto = buildProducts.buildProductDetailsDto();
+        ProductDetailsDto productDetailsDto = BuildProducts.buildProductDetailsDto();
 
         when(productService.addProduct(any())).thenReturn(productMapper.toProductDetails(productDetailsDto));
         mockMvc.perform(post("/api/v1/products")
@@ -79,7 +80,7 @@ public class ProductControllerIT {
     @Test
     @SneakyThrows
     void shouldThrowsValidationExceptionWithNoValidationProductFields() throws JsonProcessingException, Exception {
-        ProductDetailsDto dto = productMapper.toProductDetailsDto(buildProducts.buildInvalidProductDetails());
+        ProductDetailsDto dto = productMapper.toProductDetailsDto(BuildProducts.buildInvalidProductDetails());
 
         mockMvc.perform(post("/api/v1/products")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -104,11 +105,11 @@ public class ProductControllerIT {
     @Test
     @SneakyThrows
     void shouldFindByIdProduct() throws JsonProcessingException, Exception {
-        ProductDetails product = buildProducts.buildProductDetails();
+        ProductDetails product = BuildProducts.buildProductDetails();
 
-        when(productService.getProductById(ID)).thenReturn(product);
+        when(productService.getProductById(uuid1)).thenReturn(product);
 
-        mockMvc.perform(get("/api/v1/products/{id}", ID)
+        mockMvc.perform(get("/api/v1/products/{id}", uuid1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -117,16 +118,16 @@ public class ProductControllerIT {
                 .andExpect(jsonPath("$.type").value(Matchers.equalToIgnoringCase(String.valueOf(product.getType()))))
                 .andExpect(jsonPath("$.mission").value(Matchers.equalToIgnoringCase(String.valueOf(product.getMission()))));
 
-        verify(productService, times(1)).getProductById(ID);
+        verify(productService, times(1)).getProductById(uuid1);
     }
 
     @Test
     @SneakyThrows
     void shouldThrowsProductNotFoundException() throws JsonProcessingException, Exception {
-        ProductNotFoundException exception = new ProductNotFoundException(ID);
-        doThrow(exception).when(productService).getProductById(ID);
+        ProductNotFoundException exception = new ProductNotFoundException(uuid1);
+        doThrow(exception).when(productService).getProductById(uuid1);
 
-        mockMvc.perform(get("/api/v1/products/{id}", ID)
+        mockMvc.perform(get("/api/v1/products/{id}", uuid1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
@@ -134,10 +135,10 @@ public class ProductControllerIT {
                 .andExpect(jsonPath("$.title").value("Product Not Found"));
 
         assertThrows(ProductNotFoundException.class, () -> {
-            productController.getProductById(ID);
+            productController.getProductById(uuid1);
         });
 
-        verify(productService, times(2)).getProductById(ID);
+        verify(productService, times(2)).getProductById(uuid1);
     }
 
 

@@ -28,7 +28,7 @@ public abstract class BaseIntegration {
 
     @DynamicPropertySource
     static void registerDynamicProperties(DynamicPropertyRegistry registry) {
-        registry.add("wiremock.server.base-path", () -> wireMockServer.baseUrl());
+        registry.add("wiremock.server.base-path", () -> "http://localhost:" + wireMockServer.port());
     }
 
     @AfterAll

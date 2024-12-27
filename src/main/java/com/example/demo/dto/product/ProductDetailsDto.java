@@ -9,6 +9,7 @@ import lombok.extern.jackson.Jacksonized;
 import jakarta.validation.GroupSequence;
 import jakarta.validation.constraints.*;
 import java.util.List;
+import java.util.UUID;
 
 @Value
 @Builder
@@ -16,8 +17,8 @@ import java.util.List;
 @Jacksonized
 public class ProductDetailsDto {
 
-    @NotNull(message = "ID cannot be null.")
-    Long id;
+    @NotNull(message = "ID cannot be null")
+    UUID id;
 
     @NotBlank(message = "Title cannot be blank.")
     @Size(max = 100, message = "Title must not exceed 100 characters.")

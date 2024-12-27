@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -23,7 +24,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-
+    private final UUID uuid1 = UUID.fromString("3c4632d1-da13-44f5-b3b5-68fe49d179ae");
+    private final UUID uuid2 = UUID.fromString("b73be0de-93cf-46fa-b686-de7f29b45990");
+    private final UUID uuid3 = UUID.fromString("114337c5-9611-4781-bb2c-b47a0e1ac9fc");
+    private final UUID uuid4 = UUID.fromString("bf769b32-4e43-4b63-a994-71458a80c363");
+    private final UUID uuid5 = UUID.fromString("21105d6f-63af-44ea-a36e-8e8e11df10ed");
     private final ActivationService keyActivationService;
 
     private List<ProductDetails> products = buildProductDetailsMock();
@@ -62,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDetails deleteProduct(Long id) {
+    public ProductDetails deleteProduct(UUID id) {
         ProductDetails productToRemove = getProductById(id);
 
         products = products.stream()
@@ -74,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDetails getProductById(Long id) {
+    public ProductDetails getProductById(UUID id) {
         return products.stream()
                 .filter(product -> product.getId().toString().equals(id.toString()))
                 .findFirst()
@@ -101,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
     private List<ProductDetails> buildProductDetailsMock() {
         return new ArrayList<>(List.of(
                 ProductDetails.builder()
-                        .id(1L)
+                        .id(uuid1)
                         .title("Falcon 9")
                         .shortDescription("A reusable rocket designed for commercial missions")
                         .price(62000000.0)
@@ -110,7 +115,7 @@ public class ProductServiceImpl implements ProductService {
                         .tags(List.of("space", "rocket", "commercial"))
                         .build(),
                 ProductDetails.builder()
-                        .id(2L)
+                        .id(uuid2)
                         .title("Dragon")
                         .shortDescription("A spacecraft designed for cargo and crew missions to the ISS")
                         .price(200000000.0)
@@ -119,7 +124,7 @@ public class ProductServiceImpl implements ProductService {
                         .tags(List.of("space", "shuttle", "scientific"))
                         .build(),
                 ProductDetails.builder()
-                        .id(3L)
+                        .id(uuid3)
                         .title("Starship")
                         .shortDescription("A fully reusable super heavy-lift launch vehicle")
                         .price(1000000000.0)
@@ -128,7 +133,7 @@ public class ProductServiceImpl implements ProductService {
                         .tags(List.of("space", "rocket", "exploration"))
                         .build(),
                 ProductDetails.builder()
-                        .id(4L)
+                        .id(uuid4)
                         .title("Soyuz")
                         .shortDescription("A series of spacecraft designed for manned missions to the ISS")
                         .price(80000000.0)
@@ -137,7 +142,7 @@ public class ProductServiceImpl implements ProductService {
                         .tags(List.of("space", "shuttle", "commercial"))
                         .build(),
                 ProductDetails.builder()
-                        .id(5L)
+                        .id(uuid5)
                         .title("Voyager")
                         .shortDescription("A spacecraft designed for deep space exploration")
                         .price(865000000.0)

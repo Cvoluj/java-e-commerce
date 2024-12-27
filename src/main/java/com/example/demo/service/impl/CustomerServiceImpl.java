@@ -10,12 +10,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
-
+    public final UUID uuid1 = UUID.fromString("606f8650-524b-44ce-8014-a0be9b4729be");
+    private final UUID uuid2 = UUID.fromString("de7e98b7-0072-41d6-ac46-21578c3c28c7");
+    private final UUID uuid3 = UUID.fromString("026a362f-91b6-43fb-bbbf-4e299a864a9f");
+    private final UUID uuid4 = UUID.fromString("3f0d8070-19d1-4e7b-9313-79e26054b2a9");
+    private final UUID uuid5 = UUID.fromString("05d13fc5-06db-4337-a614-79e1d13f073e");
     private final List<CustomerDetails> customers = buildCustomerDetailsMock();
 
     @Override
@@ -25,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDetails getCustomerDetailsById(Long customerId) {
+    public CustomerDetails getCustomerDetailsById(UUID customerId) {
         log.info("Fetching customer details for ID: {}", customerId);
         return customers.stream()
                 .filter(customer -> customer.getId().equals(customerId))
@@ -39,7 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
     private List<CustomerDetails> buildCustomerDetailsMock() {
         return List.of(
                 CustomerDetails.builder()
-                        .id(1L)
+                        .id(uuid1)
                         .name("Jack Spring")
                         .email("jacksrping@gmail.com")
                         .phoneNumber("+1234567890")
@@ -47,15 +52,15 @@ public class CustomerServiceImpl implements CustomerService {
                         .missionTypes(List.of(MissionType.COMMERCIAL))
                         .build(),
                 CustomerDetails.builder()
-                        .id(2L)
-                        .name("Emma Johnson")
-                        .email("emma.johnson@example.com")
+                        .id(uuid2)
+                        .name("Emma Parkinson")
+                        .email("emma.parkinson@example.com")
                         .phoneNumber("+1234567891")
                         .region("USA")
                         .missionTypes(List.of(MissionType.SCIENTIFIC))
                         .build(),
                 CustomerDetails.builder()
-                        .id(3L)
+                        .id(uuid3)
                         .name("Liam Smith")
                         .email("liam.smith@example.com")
                         .phoneNumber("+1234567892")
@@ -63,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
                         .missionTypes(List.of(MissionType.MILITARY)
 )                        .build(),
                 CustomerDetails.builder()
-                        .id(4L)
+                        .id(uuid4)
                         .name("Olivia Brown")
                         .email("olivia.brown@example.com")
                         .phoneNumber("+1234567893")
@@ -71,7 +76,7 @@ public class CustomerServiceImpl implements CustomerService {
                         .missionTypes(List.of(MissionType.EXPLORATION))
                         .build(),
                 CustomerDetails.builder()
-                        .id(5L)
+                        .id(uuid5)
                         .name("Noah Wilson")
                         .email("noah.wilson@example.com")
                         .phoneNumber("+1234567894")

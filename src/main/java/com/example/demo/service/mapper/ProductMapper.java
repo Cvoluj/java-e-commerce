@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.util.List;
+import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
@@ -43,7 +44,7 @@ public interface ProductMapper {
     @Mapping(target = "price", source = "product.price")
     @Mapping(target = "type", source = "product.type", qualifiedByName = "toSpacecraftTypeFromString")
     @Mapping(target = "mission", source = "product.mission", qualifiedByName = "toMissionTypeFromString")
-    ProductDetails toProductDetails(Long id, ProductDetailsDto product);
+    ProductDetails toProductDetails(UUID id, ProductDetailsDto product);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "shortDescription", source = "shortDescription")

@@ -1,9 +1,11 @@
 package com.example.demo.service.exception;
 
-public class CustomerNotFoundException extends RuntimeException {
-    private static final String CUSTOMER_NOT_FOUND_MESSAGE_TEMPLATE = "Customer with ID %d not found";
+import java.util.UUID;
 
-    public CustomerNotFoundException(Long customerId) {
+public class CustomerNotFoundException extends RuntimeException {
+    private static final String CUSTOMER_NOT_FOUND_MESSAGE_TEMPLATE = "Customer with ID %s not found";
+
+    public CustomerNotFoundException(UUID customerId) {
         super(String.format(CUSTOMER_NOT_FOUND_MESSAGE_TEMPLATE, customerId));
     }
 
@@ -11,7 +13,7 @@ public class CustomerNotFoundException extends RuntimeException {
         super(message);
     }
 
-    public CustomerNotFoundException(Long customerId, String additionalMessage) {
+    public CustomerNotFoundException(UUID customerId, String additionalMessage) {
         super(String.format("Customer with ID %d not found. %s", customerId, additionalMessage));
     }
 }

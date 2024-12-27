@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,7 +40,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<CustomerDetailsDto> getCustomerById(@PathVariable Long customerId) {
+    public ResponseEntity<CustomerDetailsDto> getCustomerById(@PathVariable UUID customerId) {
         var customerDetails = customerService.getCustomerDetailsById(customerId);
         var customerDetailsDto = customerDetailsMapper.toCustomerDetailsDto(customerDetails);
         return ResponseEntity.ok(customerDetailsDto);

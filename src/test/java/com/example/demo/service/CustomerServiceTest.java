@@ -6,33 +6,30 @@ import com.example.demo.service.impl.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
 
     @InjectMocks
     private CustomerServiceImpl customerService;
 
-    @Mock
-    private List<CustomerDetails> customerDetailsList;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     @DisplayName("Should return customer details by ID")
     void shouldFindCustomerById() {
-        Long customerId = 1L;
+        UUID customerId = customerService.uuid1;
         CustomerDetails customer = CustomerDetails.builder()
                 .id(customerId)
                 .name("Jack Spring")
@@ -41,7 +38,6 @@ public class CustomerServiceTest {
                 .missionTypes(List.of())
                 .build();
 
-        when(customerDetailsList.stream()).thenReturn(List.of(customer).stream());
 
         CustomerDetails foundCustomer = customerService.getCustomerDetailsById(customerId);
 
@@ -53,20 +49,13 @@ public class CustomerServiceTest {
     @Test
     @DisplayName("Should throw CustomerNotFoundException when customer not found by ID")
     void shouldThrowCustomerNotFoundException() {
-        Long invalidCustomerId = 999L;
-
-        Stream<CustomerDetails> mockStream = mock(Stream.class);
-
-        when(customerDetailsList.stream()).thenReturn(mockStream);
-        when(mockStream.filter(customer -> customer.getId().equals(invalidCustomerId)))
-                .thenReturn(mockStream);
-        when(mockStream.findFirst()).thenReturn(Optional.empty());
+        UUID invalidCustomerId = UUID.fromString("9149eb42-8f2c-442f-a192-8c1d9184127b");
 
         CustomerNotFoundException exception = assertThrows(CustomerNotFoundException.class,
                 () -> customerService.getCustomerDetailsById(invalidCustomerId),
                 "Expected CustomerNotFoundException to be thrown");
 
-        assertEquals("Customer with ID 999 not found", exception.getMessage(),
+        assertEquals(String.format("Customer with ID %s not found", invalidCustomerId), exception.getMessage(),
                 "Exception message should match the expected message");
     }
 }

@@ -23,6 +23,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.net.URI;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Tag("customer-service")
 public class CustomerControllerIT {
 
-    public static final Long ID = 1L;
+    public static final UUID ID = UUID.fromString("606f8650-524b-44ce-8014-a0be9b4729be");
 
     @Autowired
     private MockMvc mockMvc;
@@ -54,15 +55,12 @@ public class CustomerControllerIT {
     private CustomerController customerController;
 
     @Autowired
-    private BuildCustomers buildCustomers;
-
-    @Autowired
     private CustomerDetailsMapper customerDetailsMapper;
 
     @Test
     @SneakyThrows
     void shouldThrowUnsupportedOperationExceptuinOnCreateCustomer() throws JsonProcessingException, Exception {
-        CustomerDetailsDto customerDetailsDto = buildCustomers.buildCustomerDetailsDto();
+        CustomerDetailsDto customerDetailsDto = BuildCustomers.buildCustomerDetailsDto();
 
         mockMvc.perform(post("/api/v1/customers")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -74,7 +72,7 @@ public class CustomerControllerIT {
     @Test
     @SneakyThrows
     void shouldThrowsValidationExceptionWithNoValidationCustomerFields() throws JsonProcessingException, Exception {
-        CustomerDetailsDto dto = customerDetailsMapper.toCustomerDetailsDto(buildCustomers.buildInvalidCustomerDetails());
+        CustomerDetailsDto dto = customerDetailsMapper.toCustomerDetailsDto(BuildCustomers.buildInvalidCustomerDetails());
 
         mockMvc.perform(post("/api/v1/customers")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -95,7 +93,7 @@ public class CustomerControllerIT {
     @Test
     @SneakyThrows
     void shouldFindByIdCustomer() throws JsonProcessingException, Exception {
-        CustomerDetails customer = buildCustomers.buildCustomerDetails();
+        CustomerDetails customer = BuildCustomers.buildCustomerDetails();
 
         when(customerService.getCustomerDetailsById(ID)).thenReturn(customer);
 
@@ -116,7 +114,7 @@ public class CustomerControllerIT {
     @SneakyThrows
     void shouldThrowsCustomerNotFoundException() throws JsonProcessingException, Exception {
         ProblemDetail problemDetail =
-                ProblemDetail.forStatusAndDetail(NOT_FOUND, String.format("Customer with ID %d not found", ID));
+                ProblemDetail.forStatusAndDetail(NOT_FOUND, String.format("Customer with ID %s not found", ID));
 
         problemDetail.setType(URI.create("customer-not-found"));
         problemDetail.setTitle("Customer Not Found");
